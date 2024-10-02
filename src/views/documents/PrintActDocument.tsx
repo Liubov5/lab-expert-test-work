@@ -1,12 +1,12 @@
 import printJS from 'print-js'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { CCol, CRow } from '@coreui/react-pro'
 
 const PrintActDocument = () => {
   const { state } = useLocation()
   const navigate = useNavigate()
   const [close, setClose] = useState(false)
+
   useEffect(() => {
     printJS({
       printable: 'toActPrint',
@@ -15,124 +15,206 @@ const PrintActDocument = () => {
       onPrintDialogClose: () => setClose(true),
     })
   }, [])
+
   useEffect(() => {
     navigate(`/orders/${state.id}?view=true`)
   }, [close])
+
   return (
     <div id="toActPrint">
-      <CRow>
-        <CCol>
-          {' '}
+      <div>
+        <div>
           <h4
-            style={{ textAlign: 'center', fontSize: '30px', fontWeight: '900' }}
+            style={{
+              textAlign: 'center',
+              fontSize: '30px',
+              fontWeight: '900',
+              marginBottom: '50px',
+            }}
           >
             Акт отбора проб № {state.idAct}
           </h4>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Наименование организации:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>
-            {state.legalForm} {state.companyName}
+            {state.legalForm} «{state.companyName}»
           </p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Наименование объекта:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.objectName}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Место отбора проб:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.samplingLocation}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Объект контроля:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.objectControl}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Дата отбора проб:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.samplingDate}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Время отбора проб:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.samplingTime}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Наименование материала</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.materialName}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Количество образцов:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.samplingQuantity}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Документ о качестве:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.qualityDocument}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Ответственное лицо:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.respUser}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Примечание:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.note}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Условия окружающей среды:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.environmental}</p>
-        </CCol>
-      </CRow>
-      <div style={{ marginTop: '50px' }}>
-        <CRow>
-          <CCol>Фамилия:________________</CCol>
-          <CCol>Подпись:________________</CCol>
-        </CRow>
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: '100px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>Фамилия:________________</div>
+        <div>Подпись:________________</div>
       </div>
     </div>
   )

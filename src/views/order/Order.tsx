@@ -389,25 +389,6 @@ const OrderDetail = (): JSX.Element => {
         .finally(() => setLoading(false))
     }
   }
-  // useEffect(()=>{
-  //   const info = {
-  //     id: data.id,
-  //     idAct: data.samplingAct.id,
-  //     companyName: data.user.company.name,
-  //     legalForm: data.user.company.legalForm,
-  //     objectName: data.researchObjects.name,
-  //     samplingLocation: data.samplingLocation,
-  //     objectControl: data.objectControl,
-  //     samplingDate: data.samplingAct.samplingDate,
-  //     samplingTime: data.samplingAct.samplingTime,
-  //     materialName: data.samplingAct.materialName,
-  //     samplingQuantity: data.samplingAct.samplingQuantity,
-  //     qualityDocument: data.samplingAct.qualityDocument,
-  //     respUser: data.samplingAct.respUser,
-  //     note: data.samplingAct.note,
-  //     environmental: data.samplingAct.environmental,
-  //   }
-  // },[data])
 
   const handleDownloadClick = () => {
     navigate('/download/act-document', { state: data })
@@ -417,9 +398,24 @@ const OrderDetail = (): JSX.Element => {
     if (type === 'order') {
       navigate('/print/order-document', { state: data })
     } else if (type === 'act') {
-      console.log('lol')
-
-      navigate('/print/act-document', { state: data })
+      const info = {
+        id: data.id,
+        idAct: data.samplingAct.id,
+        companyName: data.user.company.name,
+        legalForm: data.user.company.legalForm,
+        objectName: data.researchObjects.name,
+        samplingLocation: data.samplingLocation,
+        objectControl: data.objectControl,
+        samplingDate: data.samplingAct.samplingDate,
+        samplingTime: data.samplingAct.samplingTime,
+        materialName: data.samplingAct.materialName,
+        samplingQuantity: data.samplingAct.samplingQuantity,
+        qualityDocument: data.samplingAct.qualityDocument,
+        respUser: data.samplingAct.respUser,
+        note: data.samplingAct.note,
+        environmental: data.samplingAct.environmental,
+      }
+      navigate('/print/act-document', { state: info })
     }
   }
 

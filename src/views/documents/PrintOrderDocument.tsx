@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { redirect, useLocation, useNavigate } from 'react-router-dom'
-import { CCol, CRow } from '@coreui/react-pro'
 import { getDateV1 } from '../../helper/getDate'
 import printJS from 'print-js'
 
@@ -8,6 +7,7 @@ const PrintOrderDocument = ({}: any): any => {
   const { state } = useLocation()
   const navigate = useNavigate()
   const [close, setClose] = useState(false)
+
   useEffect(() => {
     printJS({
       printable: 'toPrint',
@@ -16,25 +16,40 @@ const PrintOrderDocument = ({}: any): any => {
       onPrintDialogClose: () => setClose(true),
     })
   }, [])
+
   useEffect(() => {
     navigate(`/orders/${state.id}?view=true`)
   }, [close])
 
   return (
     <div id="toPrint">
-      <CRow>
-        <CCol xs={12} sm={2}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Контрагент:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
-          <p>{state.user.company.name}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+        <div>
+          <p>
+            {state.user.company.legalForm} «{state.user.company.name}»
+          </p>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          columnGap: '30px',
+        }}
+      >
+        <div style={{ width: '300px' }}>
           <p>Завяку составил:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>
             {state.user.surname +
               ' ' +
@@ -43,21 +58,21 @@ const PrintOrderDocument = ({}: any): any => {
               state.user.lastName[0] +
               '.'}
           </p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Телефон составителя:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.user.phone}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Ответственный:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>
             {state.responsibleUser.surname +
               ' ' +
@@ -66,97 +81,104 @@ const PrintOrderDocument = ({}: any): any => {
               state.responsibleUser.lastName[0] +
               '.'}
           </p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Телефон исполнителя:</p>
-        </CCol>
-        <CCol xs={12} sm={4}>
+        </div>
+        <div>
           <p>{state.responsibleUser.phone}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol>
-          <h4
-            style={{ textAlign: 'center', fontSize: '30px', fontWeight: '900' }}
-          >
-            Заявка № {state.id} от {getDateV1(state.createdAt)}
-          </h4>
-        </CCol>
-      </CRow>
-      <CRow>
+        </div>
+      </div>
+      <div>
+        <h4
+          style={{
+            textAlign: 'center',
+            fontSize: '30px',
+            fontWeight: '900',
+            marginBottom: '50px',
+          }}
+        >
+          Заявка № {state.id} от {getDateV1(state.createdAt)}
+        </h4>
+      </div>
+      <div style={{ marginBottom: '20px' }}>
         <p>Прошу провести испытания по ниже указанным параметрам: </p>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Дата проведения испытаний:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{getDateV1(state.testDate)}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Время проведения испытаний:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.testTime}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Виды работ:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.typeJob}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Объект строительства: </p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.researchObjects.name}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Объект контроля:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.objectControl}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Место отбора проб:</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.samplingLocation}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Проект: </p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.name}</p>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol xs={12} sm={2}>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', columnGap: '30px' }}>
+        <div style={{ width: '300px' }}>
           <p>Краткая информацция</p>
-        </CCol>
-        <CCol xs={12} sm={3}>
+        </div>
+        <div>
           <p>{state.description}</p>
-        </CCol>
-      </CRow>
-      <div style={{ marginTop: '50px' }}>
-        <CRow>
-          <CCol>Фамилия:________________</CCol>
-          <CCol>Подпись:________________</CCol>
-        </CRow>
+        </div>
+      </div>
+      <div
+        style={{
+          marginTop: '100px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div>Фамилия:________________</div>
+        <div>Подпись:________________</div>
       </div>
     </div>
   )
