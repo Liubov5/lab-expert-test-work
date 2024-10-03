@@ -29,6 +29,7 @@ import { useTypedSelector } from './store'
 import PrintOrderDocument from './views/documents/PrintOrderDocument'
 import PrintActDocument from './views/documents/PrintActDocument'
 import DownloadActDocument from './views/documents/DownloadActDocument'
+import PrintCommentsDocument from './views/documents/PrintCommentsDocument'
 
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
@@ -296,10 +297,10 @@ const App = (): JSX.Element => {
             }
           ></Route>
           <Route
-            path="/download/act-document"
+            path="/print/comments-document"
             element={
               <RequireAuth>
-                <DownloadActDocument />
+                <PrintCommentsDocument />
               </RequireAuth>
             }
           ></Route>

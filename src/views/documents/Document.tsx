@@ -24,6 +24,8 @@ import { cilArrowCircleLeft } from '@coreui/icons'
 import { useTypedSelector } from '../../store'
 import { Viewer, Worker, RenderPageProps } from '@react-pdf-viewer/core'
 import { printOrDownloadDoc } from '../../utils'
+import printJS from 'print-js'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 
 const CustomPageLayer: React.FC<{
   renderPageProps: RenderPageProps
@@ -74,6 +76,15 @@ const Document = (): JSX.Element => {
     getDocumentsShow(id)
   }, [id])
 
+  const handlePrintClick = () => {
+    console.log('lol')
+    printJS({
+      printable: 'toPrint',
+      type: 'html',
+      targetStyles: ['*'],
+    })
+  }
+
   return (
     <CContainer>
       <CCard>
@@ -103,6 +114,7 @@ const Document = (): JSX.Element => {
               <>
                 {showPicture?.file?.url.includes('.pdf') ? (
                   <div
+                    id="toPrint"
                     className="pdf-viewer"
                     style={{
                       border: '1px solid rgba(0, 0, 0, 0.3)',
@@ -136,11 +148,22 @@ const Document = (): JSX.Element => {
           </div>
           {/* Actions Buttons block*/}
           <CCol className="d-flex justify-content-end mt-5">
-            <CButton className="ms-4" size="lg" variant="outline">
+            <CButton
+              className="ms-4"
+              size="lg"
+              variant="outline"
+              onClick={() => handlePrintClick()}
+            >
               Печать
             </CButton>
             <CButton className="ms-4" size="lg" variant="outline">
-              Скачать
+              <a
+                style={{ textDecoration: 'none' }}
+                download
+                href={showPicture?.file?.url}
+              >
+                Скачать
+              </a>
             </CButton>
           </CCol>
         </CCardBody>

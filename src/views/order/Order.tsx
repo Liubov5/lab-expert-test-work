@@ -45,6 +45,11 @@ import ProtocolApi, { DocEnum } from '../protocol-reports/ProtocolReports.Api'
 import { OrderStatus } from '../../typings'
 import print from 'print-js'
 import { getDateV1 } from '../../helper/getDate'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import DownloadActDocument from '../documents/DownloadActDocument'
+import DownloadOrderDocument from '../documents/DownloadOrderDocument'
+import { legalForm } from '../../helper/legalForm'
+import DownloadCommentsDocument from '../documents/DownloadCommentsDocument'
 
 const OrderDetail = (): JSX.Element => {
   const params = useParams()
@@ -389,36 +394,30 @@ const OrderDetail = (): JSX.Element => {
         .finally(() => setLoading(false))
     }
   }
-
-  const handleDownloadClick = () => {
-    navigate('/download/act-document', { state: data })
-  }
-
   const handlePrintClick = (type: any) => {
     if (type === 'order') {
       navigate('/print/order-document', { state: data })
     } else if (type === 'act') {
-      const info = {
-        id: data.id,
-        idAct: data.samplingAct.id,
-        companyName: data.user.company.name,
-        legalForm: data.user.company.legalForm,
-        objectName: data.researchObjects.name,
-        samplingLocation: data.samplingLocation,
-        objectControl: data.objectControl,
-        samplingDate: data.samplingAct.samplingDate,
-        samplingTime: data.samplingAct.samplingTime,
-        materialName: data.samplingAct.materialName,
-        samplingQuantity: data.samplingAct.samplingQuantity,
-        qualityDocument: data.samplingAct.qualityDocument,
-        respUser: data.samplingAct.respUser,
-        note: data.samplingAct.note,
-        environmental: data.samplingAct.environmental,
-      }
-      navigate('/print/act-document', { state: info })
+      navigate('/print/act-document', {
+        state: {
+          actDetail,
+          info: {
+            id: data.id,
+            companyName: data.user.company.name,
+            legalForm: data.user.company.legalForm,
+            objectName: data.researchObjects.name,
+            samplingLocation: data.samplingLocation,
+            objectControl: data.objectControl,
+          },
+        },
+      })
+    } else if (type === 'comments') {
+      navigate('/print/comments-document', {
+        state: { comments: data.comments, orderId: data.id },
+      })
     }
   }
-
+  console.log(labInfo)
   return loading ? (
     <div className="loading_spinner">
       <CSpinner />
@@ -620,9 +619,13 @@ const OrderDetail = (): JSX.Element => {
                       <p>
                         Генеральному директору
                         <br />
-                        {labInfo?.legalForm + ' ' + labInfo?.name}
+                        {Object.keys(labInfo).length
+                          ? labInfo?.legalForm + ' ' + labInfo?.name
+                          : 'Не заполнено'}
                         <br />
-                        {`${labInfo.owner?.surname} ${labInfo.owner?.name?.[0]}. ${labInfo.owner?.lastName?.[0]}.`}
+                        {Object.keys(labInfo).length
+                          ? `${labInfo.owner?.surname} ${labInfo.owner?.name?.[0]}. ${labInfo.owner?.lastName?.[0]}.`
+                          : 'Не заполнено'}
                       </p>
                     </div>
                   </div>
@@ -1155,7 +1158,7 @@ const OrderDetail = (): JSX.Element => {
                 </CForm>
               </CCol>
               {/* Actions Buttons block*/}
-              <CCol className="d-flex justify-content-end">
+              <CCol className="d-flex justify-content-end mt-4">
                 <CButton
                   onClick={() => handlePrintClick('order')}
                   className="ms-4"
@@ -1164,13 +1167,19 @@ const OrderDetail = (): JSX.Element => {
                 >
                   Печать
                 </CButton>
-                <CButton
-                  onClick={() => handleDownloadClick()}
-                  className="ms-4"
-                  size="lg"
-                  variant="outline"
-                >
-                  Скачать
+
+                <CButton className="ms-4" size="lg" variant="outline">
+                  <PDFDownloadLink
+                    style={{ textDecoration: 'none' }}
+                    document={<DownloadOrderDocument data={data} />}
+                    fileName={`Заявка № ${actDetail?.id}от ${getDateV1(
+                      data.createdAt,
+                    )}.pdf`}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? 'Скачивание...' : 'Скачать'
+                    }
+                  </PDFDownloadLink>
                 </CButton>
               </CCol>
             </CCardBody>
@@ -1798,7 +1807,7 @@ const OrderDetail = (): JSX.Element => {
                   </CForm>
                 </CCol>
                 {/* Actions Buttons block*/}
-                <CCol className="d-flex justify-content-end">
+                <CCol className="d-flex justify-content-end mt-4">
                   <CButton
                     onClick={() => handlePrintClick('act')}
                     className="ms-4"
@@ -1808,7 +1817,15 @@ const OrderDetail = (): JSX.Element => {
                     Печать
                   </CButton>
                   <CButton className="ms-4" size="lg" variant="outline">
-                    Скачать
+                    <PDFDownloadLink
+                      style={{ textDecoration: 'none' }}
+                      document={<DownloadActDocument data={data} />}
+                      fileName={`Акт отбора проб № ${data.samplingAct.id}.pdf`}
+                    >
+                      {({ blob, url, loading, error }) =>
+                        loading ? 'Скачивание...' : 'Скачать'
+                      }
+                    </PDFDownloadLink>
                   </CButton>
                 </CCol>
               </CCardBody>
@@ -2052,24 +2069,38 @@ const OrderDetail = (): JSX.Element => {
                 </CForm>
               </CCol>
               {/* Actions Buttons block*/}
-              <CCol className="d-flex justify-content-end mt-5">
-                <CButton
-                  onClick={() => handlePrintClick('')}
-                  className="ms-4"
-                  size="lg"
-                  variant="outline"
-                >
-                  Печать
-                </CButton>
-                <CButton
-                  onClick={() => handleDownloadClick()}
-                  className="ms-4"
-                  size="lg"
-                  variant="outline"
-                >
-                  Скачать
-                </CButton>
-              </CCol>
+              {data.comments.length !== 0 ? (
+                <CCol className="d-flex justify-content-end mt-4">
+                  <CButton
+                    onClick={() => handlePrintClick('comments')}
+                    className="ms-4"
+                    size="lg"
+                    variant="outline"
+                  >
+                    Печать
+                  </CButton>
+
+                  <CButton className="ms-4" size="lg" variant="outline">
+                    <PDFDownloadLink
+                      style={{ textDecoration: 'none' }}
+                      document={
+                        <DownloadCommentsDocument
+                          data={{ comments: data.comments, orderId: data.id }}
+                        />
+                      }
+                      fileName={`Комментарии к заявке № ${
+                        data?.id
+                      }от ${getDateV1(data.createdAt)}.pdf`}
+                    >
+                      {({ blob, url, loading, error }) =>
+                        loading ? 'Скачивание...' : 'Скачать'
+                      }
+                    </PDFDownloadLink>
+                  </CButton>
+                </CCol>
+              ) : (
+                <></>
+              )}
             </CCardBody>
           </CCard>
           {/* PROTOCOL CARD */}
